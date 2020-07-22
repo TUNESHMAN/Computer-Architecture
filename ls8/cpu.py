@@ -22,7 +22,25 @@ class CPU:
     def load(self):
         """Load a program into memory."""
 
-        address = 0
+        try:
+            address = 0
+            with open(filename) as f:
+                for line in f:
+                    # split before comment
+                    comment_split = line.split("#")
+                # convert to a number splitting and stripping
+                    num = comment_split[0].strip()
+
+                    if num == "":
+                        continue  # ignore blank lines
+                    val = int(num, 2)
+                # store the value in memory at the given address
+                    self.ram[address] = val
+
+                    address += 1
+        except FileNotFoundError:
+            print(f"{sys.argv[0]}:{filename} not found!")
+            sys.exit(2)
 
         # For now, we've just hardcoded a program:
 
@@ -45,12 +63,12 @@ class CPU:
 
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
-        # elif op == "SUB":
-        #     self.reg[reg_a] -= self.reg[reg_b]
-        # elif op == "MUL":
-        #     self.reg[reg_a] *= self.reg[reg_b]
-        # elif op == "DIV":
-        #     self.reg[reg_a] //= self.reg[reg_b]
+        elif op == "SUB":
+            self.reg[reg_a] -= self.reg[reg_b]
+        elif op == "MUL":
+            self.reg[reg_a] *= self.reg[reg_b]
+        elif op == "DIV":
+            self.reg[reg_a] //= self.reg[reg_b]
 
         else:
             raise Exception("Unsupported ALU operation")
