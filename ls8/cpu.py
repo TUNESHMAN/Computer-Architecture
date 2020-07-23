@@ -104,17 +104,17 @@ class CPU:
             # halt
             if ir == 0b00000001:
                 self.halted = True
-                pc_plus
+
             # LDI
             elif ir == 0b10000010:
                 self.reg[operand_a] = operand_b
-                pc_plus = 3
+
             # PRN
             elif ir == 0b01000111:
                 print(self.reg[operand_a])
-                pc_plus = 2
+
             # MUL
-            elif ir == 10100010:
-                self.alu("10100010", operand_a, operand_b)
+            elif ir == 0b10100010:
+                self.alu("MUL", operand_a, operand_b)
 
             self.pc += pc_plus
